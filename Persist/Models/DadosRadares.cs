@@ -3,13 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace Models
 {
-    public class RadarData
+    public class DadosRadares
     {
         [JsonProperty("concessionaria")]
         public string Concessionaria { get; set; }
         
         [JsonProperty("ano_do_pnv_snv")]
-        public string AnoDoPnvSnv { get; set; }
+        public int AnoDoPnvSnv { get; set; }
         
         [JsonProperty("tipo_de_radar")]
         public string TipoDeRadar { get; set; }
@@ -21,7 +21,7 @@ namespace Models
         public string Uf { get; set; }
 
         [JsonProperty("km_m")]
-        public string KmM { get; set; }
+        public decimal KmM { get; set; }
 
         [JsonProperty("municipio")]
         public string Municipio { get; set; }
@@ -39,13 +39,13 @@ namespace Models
         public DateOnly[] DataDaInativacao { get; set; }
 
         [JsonProperty("latitude")]
-        public string Latitude { get; set; }
+        public decimal Latitude { get; set; }
 
         [JsonProperty("longitude")]
-        public string Longitude { get; set; }
+        public decimal Longitude { get; set; }
 
         [JsonProperty("velocidade_leve")]
-        public string VelocidadeLeve { get; set; }
+        public int VelocidadeLeve { get; set; }
 
         public override string ToString() => $"Concessionaria: {Concessionaria}\n" + 
                                              $"Ano do PNV/SNV: {AnoDoPnvSnv}\n" + 
