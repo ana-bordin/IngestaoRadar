@@ -12,7 +12,7 @@ namespace Services
         {
             _repository = new RadarMongoRepository();
         }
-        public bool Insert(List<DadoRadar> dadosRadares)
+        public bool Insert(List<DadosRadares> dadosRadares)
         {
             return _repository.Insert(dadosRadares);
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using MongoDB.Driver;
 using System.Data;
@@ -17,9 +18,9 @@ namespace Repositories
             _connection.Open();
         }
 
-        public bool Insert(List<DadoRadar> dadosRadares)
+        public bool Insert(List<DadosRadares> dadosRadares)
         {
-            SqlCommand command = new SqlCommand(DadoRadar.INSERTSQL, _connection);
+            SqlCommand command = new SqlCommand(DadosRadares.INSERTSQL, _connection);
             try
             {
                 var dataTable = new DataTable();
@@ -47,13 +48,15 @@ namespace Repositories
                 {
                     totalItems++;
                     line++;
-                    dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, item.TipoPista, item.Sentido, item.Situacao, item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
+                    dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, 
+                        item.TipoPista, item.Sentido, item.Situacao,
+                        item.DataDaInativacao.Length == 0 ? DBNull.Value : item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
 
                     if (line == 100 || totalItems == dadosRadares.Count)
                     {
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connection))
                         {
-                            bulkCopy.DestinationTableName = "DadoRadar";
+                            bulkCopy.DestinationTableName = "DadosRadares";
                             bulkCopy.WriteToServer(dataTable);
                             dataTable.Clear();
                             line = 0;
@@ -74,21 +77,22 @@ namespace Repositories
             }
         }
 
-        public List<DadoRadar> GetAll()
+        public List<DadosRadares> GetAll()
         {
-            List<DadoRadar> radares = new List<DadoRadar>();
+            List<DadosRadares> radares = new List<DadosRadares>();
             StringBuilder sb = new StringBuilder();
-            sb.Append(DadoRadar.GETALLSQL);
+            sb.Append(DadosRadares.GETALLSQL);
             try
             {
                 _connection.Open();
-                SqlCommand command = new SqlCommand(DadoRadar.GETALLSQL, _connection);
+                SqlCommand command = new SqlCommand(DadosRadares.GETALLSQL, _connection);
                 //SqlCommand command = new SqlCommand(sb.ToString(), _connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        DadoRadar radar = new DadoRadar();
+                        DadosRadares radar = new DadosRadares();
+
                         radar.Id = reader.GetInt32(0);
                         radar.Concessionaria = reader.GetString(1);
                         radar.AnoDoPnvSnv = reader.GetInt32(2).ToString();
@@ -100,7 +104,7 @@ namespace Repositories
                         radar.TipoPista = reader.GetString(8);
                         radar.Sentido = reader.GetString(9);
                         radar.Situacao = reader.GetString(10);
-                        radar.DataDaInativacao = reader.GetString(11).ToArray();
+                        radar.DataDaInativacao = reader.IsDBNull(11) ? null : reader.GetString(11).ToArray();
                         radar.Latitude = reader.GetDecimal(12).ToString();
                         radar.Longitude = reader.GetDecimal(13).ToString();
                         radar.VelocidadeLeve = reader.GetInt32(14).ToString();

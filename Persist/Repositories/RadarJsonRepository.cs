@@ -7,7 +7,7 @@ namespace Repositories
 {
     public class RadarJsonRepository
     {
-        public static List<DadoRadar> GetData(string path)
+        public static List<DadosRadares> GetData(string path)
         {
             StreamReader reader = new StreamReader(path);
             string jsonString = reader.ReadToEnd();

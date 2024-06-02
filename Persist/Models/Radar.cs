@@ -5,6 +5,6 @@ namespace Models
     public class Radar
     {
         [JsonProperty("radar")]
-        public List<DadoRadar> Radars { get; set; }
+        public List<DadosRadares> Radars { get; set; }
     }
 }
