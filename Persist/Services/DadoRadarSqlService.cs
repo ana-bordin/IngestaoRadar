@@ -4,17 +4,23 @@ using System.Collections.Generic;
 
 namespace Services
 {
-    public class DadoRadarService
+    public class DadoRadarSqlService
     {
         private readonly RadarSqlRepository _repository;
 
-        public DadoRadarService()
+        public DadoRadarSqlService()
         {
             _repository = new RadarSqlRepository();
         }
+        
         public bool Insert(List<DadoRadar> dadosRadares)
         {
             return _repository.Insert(dadosRadares);
+        }
+
+        public List<DadoRadar> GetAll()
+        {
+            return _repository.GetAll();
         }
     }
 }
