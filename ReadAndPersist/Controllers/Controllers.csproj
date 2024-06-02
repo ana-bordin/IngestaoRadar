@@ -6,11 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-<<<<<<< HEAD
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
-=======
->>>>>>> persistDataInsert
 </Project>
