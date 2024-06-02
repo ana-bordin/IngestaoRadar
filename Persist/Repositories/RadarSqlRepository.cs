@@ -1,78 +1,122 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models;
+using MongoDB.Driver;
+using System.Data;
+using System.Text;
+
 namespace Repositories
 {
     public class RadarSqlRepository
     {
-        static string ConnectionString = "Server=127.0.0.1; Database=AdmRadar; User Id=sa; Password=SqlServer2019!; TrustServerCertificate=True";
-        static SqlConnection connection;
+        static readonly string _connectionString = "Server=127.0.0.1; Database=AdmRadar; User Id=sa; Password=SqlServer2019!; TrustServerCertificate=True";
+        static SqlConnection _connection;
 
         public RadarSqlRepository()
         {
-            connection = new SqlConnection(ConnectionString);
-            connection.Open();
+            _connection = new SqlConnection(_connectionString);
+            _connection.Open();
         }
-        public static bool Insert(List<DadosRadares> radares)
+
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
+            SqlCommand command = new SqlCommand(DadoRadar.INSERTSQL, _connection);
             try
             {
-                foreach (var radar in radares)
+                var dataTable = new DataTable();
+
+                dataTable.Columns.Add("Id", typeof(int));
+                dataTable.Columns.Add("Concessionaria", typeof(string));
+                dataTable.Columns.Add("AnoDoPnvSnv", typeof(int));
+                dataTable.Columns.Add("TipoDeRadar", typeof(string));
+                dataTable.Columns.Add("Rodovia", typeof(string));
+                dataTable.Columns.Add("Uf", typeof(string));
+                dataTable.Columns.Add("KmM", typeof(decimal));
+                dataTable.Columns.Add("Municipio", typeof(string));
+                dataTable.Columns.Add("TipoPista", typeof(string));
+                dataTable.Columns.Add("Sentido", typeof(string));
+                dataTable.Columns.Add("Situacao", typeof(string));
+                dataTable.Columns.Add("DataDaInativacao", typeof(string));
+                dataTable.Columns.Add("Latitude", typeof(decimal));
+                dataTable.Columns.Add("Longitude", typeof(decimal));
+                dataTable.Columns.Add("VelocidadeLeve", typeof(int));
+
+                int line = 0;
+                int totalItems = 0;
+
+                foreach (var item in dadosRadares)
                 {
-                    var query = $"INSERT INTO DadosRadares (Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve) VALUES ('{radar.Concessionaria}', '{radar.AnoDoPnvSnv}', '{radar.TipoDeRadar}', '{radar.Rodovia}', '{radar.Uf}', '{radar.KmM}', '{radar.Municipio}', '{radar.TipoPista}', '{radar.Sentido}', '{radar.Situacao}', '{radar.DataDaInativacao}', '{radar.Latitude}', '{radar.Longitude}', '{radar.VelocidadeLeve}')";
-                    var command = new SqlCommand(query, connection);
-                    var result = command.ExecuteNonQuery();                
+                    totalItems++;
+                    line++;
+                    dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, item.TipoPista, item.Sentido, item.Situacao, item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
+
+                    if (line == 100 || totalItems == dadosRadares.Count)
+                    {
+                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connection))
+                        {
+                            bulkCopy.DestinationTableName = "DadoRadar";
+                            bulkCopy.WriteToServer(dataTable);
+                            dataTable.Clear();
+                            line = 0;
+                        }
+                    }
                 }
+
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Ocorreu um erro ao inserir no banco de dados:" + e);
                 return false;
             }
             finally
             {
-                connection.Close();
+                _connection.Close();
             }
         }
 
-        public bool Update(DadosRadares radar)
+        public List<DadoRadar> GetAll()
         {
+            List<DadoRadar> radares = new List<DadoRadar>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append(DadoRadar.GETALLSQL);
             try
             {
-                var query = $"UPDATE DadosRadares SET AnoDoPnvSnv = '{radar.AnoDoPnvSnv}', TipoDeRadar = '{radar.TipoDeRadar}', Rodovia = '{radar.Rodovia}', Uf = '{radar.Uf}', KmM = '{radar.KmM}', Municipio = '{radar.Municipio}', TipoPista = '{radar.TipoPista}', Sentido = '{radar.Sentido}', Situacao = '{radar.Situacao}', DataDaInativacao = '{radar.DataDaInativacao}', Latitude = '{radar.Latitude}', Longitude = '{radar.Longitude}', VelocidadeLeve = '{radar.VelocidadeLeve}' WHERE Concessionaria = '{radar.Concessionaria}'";
-                var command = new SqlCommand(query, connection);
-                var result = command.ExecuteNonQuery();
-                return true;
+                _connection.Open();
+                SqlCommand command = new SqlCommand(DadoRadar.GETALLSQL, _connection);
+                //SqlCommand command = new SqlCommand(sb.ToString(), _connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DadoRadar radar = new DadoRadar();
+                        radar.Id = reader.GetInt32(0);
+                        radar.Concessionaria = reader.GetString(1);
+                        radar.AnoDoPnvSnv = reader.GetInt32(2).ToString();
+                        radar.TipoDeRadar = reader.GetString(3);
+                        radar.Rodovia = reader.GetString(4);
+                        radar.Uf = reader.GetString(5);
+                        radar.KmM = reader.GetDecimal(6).ToString();
+                        radar.Municipio = reader.GetString(7);
+                        radar.TipoPista = reader.GetString(8);
+                        radar.Sentido = reader.GetString(9);
+                        radar.Situacao = reader.GetString(10);
+                        radar.DataDaInativacao = reader.GetString(11).ToArray();
+                        radar.Latitude = reader.GetDecimal(12).ToString();
+                        radar.Longitude = reader.GetDecimal(13).ToString();
+                        radar.VelocidadeLeve = reader.GetInt32(14).ToString();
+                        radares.Add(radar);
+                    }
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return false;
             }
             finally
             {
-                connection.Close();
+                _connection.Close();
             }
-        }
-
-        public bool Delete(DadosRadares radar)
-        {
-            try
-            {
-                var query = $"UPDATE DadosRadares SET DataDaInativacao = CONVERT(date, GETDATE()) WHERE Concessionaria = {radar.Concessionaria}";
-                var command = new SqlCommand(query, connection);
-                var result = command.ExecuteNonQuery();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-            finally
-            {
-                connection.Close();
-            }
+            return radares;
         }
     }
 }

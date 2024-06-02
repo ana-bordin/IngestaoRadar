@@ -1,7 +1,12 @@
-<<<<<<< HEAD
 ﻿using Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -26,17 +31,5 @@ namespace Repositories
                 return false;
             }
         }
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Repositories
-{
-    internal class RadarMongoRepository
-    {
->>>>>>> persistDataInsert
     }
 }

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+=======
+<Project Sdk="Microsoft.NET.Sdk">
+>>>>>>> persistDataInsert
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +10,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+<<<<<<< HEAD
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
   </ItemGroup>
@@ -14,4 +19,6 @@
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 
+=======
+>>>>>>> persistDataInsert
 </Project>

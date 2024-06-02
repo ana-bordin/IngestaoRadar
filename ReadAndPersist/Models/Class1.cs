@@ -1,4 +1,4 @@
-﻿namespace Controllers
+﻿namespace Models
 {
     public class Class1
     {

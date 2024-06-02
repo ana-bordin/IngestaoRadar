@@ -48,3 +48,7 @@
                                              $"Velocidade leve: {VelocidadeLeve}\n";
     }
 }
+<<<<<<< HEAD
+=======
+}
+>>>>>>> persistDataInsert
