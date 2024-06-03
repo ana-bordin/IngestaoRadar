@@ -10,12 +10,12 @@ namespace View
         {
 
             Console.WriteLine("Inserir todos os regitros do Sql no banco de dados Mongo");
-           
-            DadoRadarSqlController dadoRadarSqlController = new DadoRadarSqlController();;
-            List<DadoRadar> listaRadarSql = dadoRadarSqlController.GetAll();
 
-            DadoRadarMongoController dadoRadarMongoController = new DadoRadarMongoController();
-            dadoRadarMongoController.Insert(listaRadarSql);
+            DadosRadaresSqlController dadosRadaresSqlController = new DadosRadaresSqlController();;
+            List<DadosRadares> listaRadarSql = dadosRadaresSqlController.GetAll();
+
+            DadosRadaresMongoController dadosRadaresMongoController = new DadosRadaresMongoController();
+            dadosRadaresMongoController.Insert(listaRadarSql);
         }
     }
 }

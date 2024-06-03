@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace Services
 {
-    public class DadoRadarMongoService
+    public class DadosRadaresMongoService
     {
         private readonly RadarMongoRepository _repository;
 
-        public DadoRadarMongoService()
+        public DadosRadaresMongoService()
         {
             _repository = new RadarMongoRepository();
         }
-        public bool Insert(List<DadoRadar> dadosRadares)
+        public bool Insert(List<DadosRadares> dadosRadares)
         {
             return _repository.Insert(dadosRadares);
         }

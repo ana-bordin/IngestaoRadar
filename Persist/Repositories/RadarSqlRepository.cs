@@ -87,9 +87,7 @@ namespace Repositories
             sb.Append(DadosRadares.GETALLSQL);
             try
             {
-                _connection.Open();
                 SqlCommand command = new SqlCommand(DadosRadares.GETALLSQL, _connection);
-                //SqlCommand command = new SqlCommand(sb.ToString(), _connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -121,7 +119,7 @@ namespace Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
             finally
             {
