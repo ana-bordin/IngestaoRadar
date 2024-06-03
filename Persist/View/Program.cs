@@ -14,13 +14,7 @@ namespace View
 
             Console.WriteLine("Inserir todos os regitros nos bancos de dados SQL");
             DadoRadarSqlController dadoRadarSqlController = new DadoRadarSqlController();
-            dadoRadarSqlController.Insert(list);
-
-            List<DadoRadar> listaRadarSql = dadoRadarSqlController.GetAll();
-
-            //DadoRadarMongoController dadoRadarMongoController = new DadoRadarMongoController();
-            //dadoRadarMongoController.Insert(listaRadarSql);
-            
+            dadoRadarSqlController.Insert(list);           
         }
     }
 }
