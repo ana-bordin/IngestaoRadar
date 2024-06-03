@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using Models;
 using MongoDB.Driver;
 using System.Data;
@@ -18,9 +17,9 @@ namespace Repositories
             _connection.Open();
         }
 
-        public bool Insert(List<DadosRadares> dadosRadares)
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
-            SqlCommand command = new SqlCommand(DadosRadares.INSERTSQL, _connection);
+            SqlCommand command = new SqlCommand(DadoRadar.INSERTSQL, _connection);
             try
             {
                 var dataTable = new DataTable();
@@ -48,18 +47,13 @@ namespace Repositories
                 {
                     totalItems++;
                     line++;
-                    dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, 
-                        item.TipoPista, item.Sentido, item.Situacao,
-                        item.DataDaInativacao.Length == 0 ? DBNull.Value : item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
-                    // verificamos se a data da inativacao esta vazia no json (verificando se o array esta com tamanho igual a 0)
-                    // caso for vazio, utilizamos um metodo do sql para adicionar null no banco
-                    // caso nao for vazio, vamos adicionar o valor retornado pelo json
-                    // foi utilizado um if ternario
+                    dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, item.TipoPista, item.Sentido, item.Situacao, item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
+
                     if (line == 100 || totalItems == dadosRadares.Count)
                     {
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connection))
                         {
-                            bulkCopy.DestinationTableName = "DadosRadares";
+                            bulkCopy.DestinationTableName = "DadoRadar";
                             bulkCopy.WriteToServer(dataTable);
                             dataTable.Clear();
                             line = 0;
@@ -80,22 +74,21 @@ namespace Repositories
             }
         }
 
-        public List<DadosRadares> GetAll()
+        public List<DadoRadar> GetAll()
         {
-            List<DadosRadares> radares = new List<DadosRadares>();
+            List<DadoRadar> radares = new List<DadoRadar>();
             StringBuilder sb = new StringBuilder();
-            sb.Append(DadosRadares.GETALLSQL);
+            sb.Append(DadoRadar.GETALLSQL);
             try
             {
                 _connection.Open();
-                SqlCommand command = new SqlCommand(DadosRadares.GETALLSQL, _connection);
-                //SqlCommand command = new SqlCommand(sb.ToString(), _connection);
+                SqlCommand command = new SqlCommand(DadoRadar.GETALLSQL, _connection);
+
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        DadosRadares radar = new DadosRadares();
-
+                        DadoRadar radar = new DadoRadar();
                         radar.Id = reader.GetInt32(0);
                         radar.Concessionaria = reader.GetString(1);
                         radar.AnoDoPnvSnv = reader.GetInt32(2).ToString();
@@ -107,11 +100,7 @@ namespace Repositories
                         radar.TipoPista = reader.GetString(8);
                         radar.Sentido = reader.GetString(9);
                         radar.Situacao = reader.GetString(10);
-                        // na linha abaixo verificamos se a data inativacao vindo do sql esta null
-                        // se ela for null, adicionamos null no radar.DataDaInativacao
-                        // caso nao for null, vamos adicionar o valor retornado do banco (previamente enviado pelo json)
-                        // foi utilizado um if ternario
-                        radar.DataDaInativacao = reader.IsDBNull(11) ? null : reader.GetString(11).ToArray(); 
+                        radar.DataDaInativacao = reader.GetString(11).ToArray();
                         radar.Latitude = reader.GetDecimal(12).ToString();
                         radar.Longitude = reader.GetDecimal(13).ToString();
                         radar.VelocidadeLeve = reader.GetInt32(14).ToString();
