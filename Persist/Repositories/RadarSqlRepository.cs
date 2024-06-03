@@ -81,7 +81,6 @@ namespace Repositories
             sb.Append(DadoRadar.GETALLSQL);
             try
             {
-                _connection.Open();
                 SqlCommand command = new SqlCommand(DadoRadar.GETALLSQL, _connection);
                 //SqlCommand command = new SqlCommand(sb.ToString(), _connection);
                 using (SqlDataReader reader = command.ExecuteReader())
