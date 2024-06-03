@@ -9,10 +9,10 @@ namespace Repositories
         static MongoClient _mongoClient = new MongoClient(_connectionString);
         static IMongoDatabase _database = _mongoClient.GetDatabase("AdmRadar");
 
-        public bool Insert(List<DadosRadares> dadosRadares)
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
             var mongoClient = new MongoClient(_connectionString);
-            var collection = _database.GetCollection<DadosRadares>("DadoRadar");
+            var collection = _database.GetCollection<DadoRadar>("DadoRadar");
             try
             {
                 collection.InsertMany(dadosRadares);

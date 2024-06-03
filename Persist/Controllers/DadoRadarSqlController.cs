@@ -12,12 +12,12 @@ namespace Controllers
             _service = new DadoRadarSqlService();
         }
 
-        public bool Insert(List<DadosRadares> dadosRadares)
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
             return _service.Insert(dadosRadares);
         }
 
-        public List<DadosRadares> GetAll()
+        public List<DadoRadar> GetAll()
         {
             return _service.GetAll();
         }

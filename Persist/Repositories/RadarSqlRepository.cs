@@ -48,7 +48,10 @@ namespace Repositories
                     totalItems++;
                     line++;
                     dataTable.Rows.Add(null, item.Concessionaria, item.AnoDoPnvSnv, item.TipoDeRadar, item.Rodovia, item.Uf, item.KmM, item.Municipio, item.TipoPista, item.Sentido, item.Situacao, item.DataDaInativacao, item.Latitude, item.Longitude, item.VelocidadeLeve);
-
+                    // verificamos se a data da inativacao esta vazia no json (verificando se o array esta com tamanho igual a 0)
+                    // caso for vazio, utilizamos um metodo do sql para adicionar null no banco
+                    // caso nao for vazio, vamos adicionar o valor retornado pelo json
+                    // foi utilizado um if ternario
                     if (line == 100 || totalItems == dadosRadares.Count)
                     {
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(_connection))

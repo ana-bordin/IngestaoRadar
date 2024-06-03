@@ -13,12 +13,12 @@ namespace Services
             _repository = new RadarSqlRepository();
         }
         
-        public bool Insert(List<DadosRadares> dadosRadares)
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
             return _repository.Insert(dadosRadares);
         }
 
-        public List<DadosRadares> GetAll()
+        public List<DadoRadar> GetAll()
         {
             return _repository.GetAll();
         }

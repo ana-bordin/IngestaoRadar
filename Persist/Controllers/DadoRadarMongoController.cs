@@ -12,7 +12,7 @@ namespace Controllers
             _service = new DadoRadarMongoService();
         }
 
-        public bool Insert(List<DadosRadares> dadosRadares)
+        public bool Insert(List<DadoRadar> dadosRadares)
         {
             return _service.Insert(dadosRadares);
         }
