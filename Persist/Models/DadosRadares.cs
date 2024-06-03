@@ -2,17 +2,17 @@
 
 namespace Models
 {
-    public class DadoRadar
+    public class DadosRadares
     {
-        public static readonly string INSERTSQL = "INSERT INTO DadoRadar (Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve) VALUES (@Concessionaria, @AnoDoPnvSnv, @TipoDeRadar, @Rodovia, @Uf, @KmM, @Municipio, @TipoPista, @Sentido, @Situacao, @DataDaInativacao, @Latitude, @Longitude, @VelocidadeLeve)";
+        public static readonly string INSERTSQL = "INSERT INTO DadosRadares (Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve) VALUES (@Concessionaria, @AnoDoPnvSnv, @TipoDeRadar, @Rodovia, @Uf, @KmM, @Municipio, @TipoPista, @Sentido, @Situacao, @DataDaInativacao, @Latitude, @Longitude, @VelocidadeLeve)";
 
-        public static readonly string UPDATESQL = "UPDATE DadoRadar SET AnoDoPnvSnv = '{radar.AnoDoPnvSnv}', TipoDeRadar = '{radar.TipoDeRadar}', Rodovia = '{radar.Rodovia}', Uf = '{radar.Uf}', KmM = '{radar.KmM}', Municipio = '{radar.Municipio}', TipoPista = '{radar.TipoPista}', Sentido = '{radar.Sentido}', Situacao = '{radar.Situacao}', DataDaInativacao = '{radar.DataDaInativacao}', Latitude = '{radar.Latitude}', Longitude = '{radar.Longitude}', VelocidadeLeve = '{radar.VelocidadeLeve}' WHERE Id = {id}";
+        public static readonly string UPDATESQL = "UPDATE DadosRadares SET AnoDoPnvSnv = '{radar.AnoDoPnvSnv}', TipoDeRadar = '{radar.TipoDeRadar}', Rodovia = '{radar.Rodovia}', Uf = '{radar.Uf}', KmM = '{radar.KmM}', Municipio = '{radar.Municipio}', TipoPista = '{radar.TipoPista}', Sentido = '{radar.Sentido}', Situacao = '{radar.Situacao}', DataDaInativacao = '{radar.DataDaInativacao}', Latitude = '{radar.Latitude}', Longitude = '{radar.Longitude}', VelocidadeLeve = '{radar.VelocidadeLeve}' WHERE Id = {id}";
 
-        public static readonly string DELETESQL = "UPDATE DadoRadar SET DataDaInativacao = CONVERT(date, GETDATE()), Situacao = 'Inativo' WHERE Id = {id}";
+        public static readonly string DELETESQL = "UPDATE DadosRadares SET DataDaInativacao = CONVERT(date, GETDATE()), Situacao = 'Inativo' WHERE Id = {id}";
 
-        public static readonly string GETALLSQL = "SELECT Id, Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve FROM DadoRadar";
+        public static readonly string GETALLSQL = "SELECT Id, Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve FROM DadosRadares";
 
-        public static readonly string GETBYIDSQL = "SELECT Id, Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve FROM DadoRadar WHERE Id = {id}";
+        public static readonly string GETBYIDSQL = "SELECT Id, Concessionaria, AnoDoPnvSnv, TipoDeRadar, Rodovia, Uf, KmM, Municipio, TipoPista, Sentido, Situacao, DataDaInativacao, Latitude, Longitude, VelocidadeLeve FROM DadosRadares WHERE Id = {id}";
 
         public int Id { get; set; }
 

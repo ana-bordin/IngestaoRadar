@@ -9,10 +9,10 @@ namespace Repositories
         static MongoClient _mongoClient = new MongoClient(_connectionString);
         static IMongoDatabase _database = _mongoClient.GetDatabase("AdmRadar");
 
-        public bool Insert(List<DadoRadar> dadosRadares)
+        public bool Insert(List<DadosRadares> dadosRadares)
         {
             var mongoClient = new MongoClient(_connectionString);
-            var collection = _database.GetCollection<DadoRadar>("DadoRadar");
+            var collection = _database.GetCollection<DadosRadares>("DadosRadares");
             try
             {
                 collection.InsertMany(dadosRadares);
@@ -20,7 +20,7 @@ namespace Repositories
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
