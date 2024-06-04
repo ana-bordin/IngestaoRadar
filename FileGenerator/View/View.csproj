@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Persist\Controllers\Controllers.csproj" />
+    <ProjectReference Include="..\..\Persist\Models\Models.csproj" />
+  </ItemGroup>
+
 </Project>
